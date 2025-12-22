@@ -31,6 +31,11 @@ keymap('n', '<C-p>', function()
     require('telescope.builtin').find_files()
 end, opts)
 
+vim.keymap.set('n', '<leader>c', '<Cmd>BufferClose<CR>', { silent = true })
+vim.keymap.set('n', '<Tab>', '<Cmd>BufferNext<CR>', { silent = true })
+vim.keymap.set('n', '<S-Tab>', '<Cmd>BufferPrevious<CR>', { silent = true })
+vim.keymap.set('n', '<leader>w', '<Cmd>NvimTreeToggle<CR>', { silent = true })
+
 if vim.fn.has("wsl") == 1 then
   vim.g.clipboard = {
     name = "WslClipboard",

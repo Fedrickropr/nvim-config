@@ -25,21 +25,47 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+	vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.format({ async = true })<CR>', opts)
+
+	local lsp_formatting_group = vim.api.nvim_create_augroup("LspFormatting", {})
+	if client.supports_method("textDocument/formatting") then
+		vim.api.nvim_clear_autocmds({
+			group = lsp_formatting_group,
+			buffer = bufnr,
+		})
+		vim.api.nvim_create_autocmd("BufWritePre", {
+			group = lsp_formatting_group,
+			buffer = bufnr,
+			callback = function()
+      vim.lsp.buf.format()
+		end,
+	})
+	end
 end
+
+vim.diagnostic.config({
+  virtual_text = true,
+  underline = true,
+  update_in_insert = true,
+})
 
 -- golang
 vim.lsp.config("gopls", {
-  on_attach = on_attach,
+	on_attach = on_attach,
   flags = {
-	debounce_text_changes = 150,
+		debounce_text_changes = 150,
   },
-  capabilities = {
-	  workspace = {
-		  didChangeWatchedFiles = {
-			  dynamicRegistration = true,
-		  },
-	  },
+	capabilities = require("cmp_nvim_lsp").default_capabilities(),
+	 settings = {
+    gopls = {
+			completeUnimported = true,
+      usePlaceholders = true,
+      analyses = {
+        unusedparams = true,
+        unusedwrite = true,
+        nilness = true,
+      }
+    }
   }
 })
 vim.lsp.enable("gopls")
