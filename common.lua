@@ -15,7 +15,6 @@ vim.g.mapleader = " "
 local keymap = vim.keymap.set
 local opts = { silent = true }
 
-
 keymap('n', '<leader>F', function()
   require('telescope.builtin').live_grep()
 end, opts)
@@ -31,10 +30,11 @@ keymap('n', '<C-p>', function()
     require('telescope.builtin').find_files()
 end, opts)
 
-vim.keymap.set('n', '<leader>c', '<Cmd>BufferClose<CR>', { silent = true })
-vim.keymap.set('n', '<Tab>', '<Cmd>BufferNext<CR>', { silent = true })
-vim.keymap.set('n', '<S-Tab>', '<Cmd>BufferPrevious<CR>', { silent = true })
-vim.keymap.set('n', '<leader>w', '<Cmd>NvimTreeToggle<CR>', { silent = true })
+keymap('n', '<leader>c', '<Cmd>BufferClose<CR>', { silent = true })
+keymap('n', '<Tab>', '<Cmd>BufferNext<CR>', { silent = true })
+keymap('n', '<S-Tab>', '<Cmd>BufferPrevious<CR>', { silent = true })
+keymap('n', '<leader>w', '<Cmd>NvimTreeToggle<CR>', { silent = true })
+keymap('n', 'x', '"_x')
 
 if vim.fn.has("wsl") == 1 then
   vim.g.clipboard = {
