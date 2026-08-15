@@ -12,6 +12,15 @@ vim.opt.autoindent = true
 vim.opt.fileformat = "unix"
 vim.g.mapleader = " "
 
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = vim.api.nvim_create_augroup('highlight_yank', {}),
+  desc = 'Hightlight selection on yank',
+  pattern = '*',
+  callback = function()
+    vim.highlight.on_yank { higroup = 'IncSearch', timeout = 250 }
+  end,
+})
+
 local keymap = vim.keymap.set
 local opts = { silent = true }
 
@@ -30,11 +39,12 @@ keymap('n', '<C-p>', function()
     require('telescope.builtin').find_files()
 end, opts)
 
-keymap('n', '<leader>c', '<Cmd>BufferClose<CR>', { silent = true })
+keymap('n', '<leader>C', '<Cmd>BufferClose<CR>', { silent = true })
 keymap('n', '<Tab>', '<Cmd>BufferNext<CR>', { silent = true })
 keymap('n', '<S-Tab>', '<Cmd>BufferPrevious<CR>', { silent = true })
 keymap('n', '<leader>w', '<Cmd>NvimTreeToggle<CR>', { silent = true })
 keymap('n', 'x', '"_x')
+keymap({'n', 'i'}, '<C-c>', '<Esc>')
 
 if vim.fn.has("wsl") == 1 then
   vim.g.clipboard = {

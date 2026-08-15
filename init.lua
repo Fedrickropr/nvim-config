@@ -19,6 +19,7 @@ Plug('hrsh7th/cmp-nvim-lsp' )
 Plug('hrsh7th/cmp-nvim-lsp-signature-help')
 Plug('neovim/nvim-lspconfig')
 Plug 'ThePrimeagen/vim-be-good'
+		
 
 vim.call('plug#end')
 
